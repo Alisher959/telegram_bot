@@ -2,6 +2,7 @@ from aiogram import types
 from aiogram.dispatcher.filters.builtin import CommandStart
 import imp
 import re
+from data.config import CHANNELS
 from aiogram.dispatcher.filters import Command, Text, CommandStart
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
@@ -10,12 +11,22 @@ from states.personalData import personalData
 from aiogram.types import InputFile
 from keyboards.default.mainKeyboard import menu, orqaga
 
-from loader import dp
+from loader import dp, bot
+
 
 
 @dp.message_handler(CommandStart())
-async def main_start(message: types.Message):
-    await message.answer(f"👋 Salom, {message.from_user.full_name}!\n Botimizga xush kelibsiz.\n Bu tugmalardan birin tanlang. 👇", reply_markup=menu)
+async def show_channels(message: types.Message):
+    channels_format = str()
+    for channel in CHANNELS:
+        # logging.info(invite_link)
+        channels_format += f"👉 <a href='https://t.me/Academic_number_one'>Academic Number One</a>\n"
+
+    await message.answer(f"Quyidagi kanalga obuna bo'ling: \n"
+                         f"{channels_format}\n\n"
+                         f"👋 Salom, {message.from_user.full_name}!\n Botimizga xush kelibsiz.\n Bu tugmalardan birin tanlang. 👇", reply_markup=menu                         
+                         )
+
     
 
 @dp.message_handler(text = "Ishdan bo`shash")
@@ -44,6 +55,6 @@ async def kurs_answer(message: Message):
 
 @dp.message_handler(text = "🔙 Orqaga 🔙")
 async def kurs_answer(message: Message):
-    await message.answer(f"👋 Salom, {message.from_user.full_name}!\n Botimizga xush kelibsiz.\n Bu tugmalardan birin tanlang. 👇", reply_markup=menu)
+    await message.answer(f"Bu tugmalardan birin tanlang. 👇", reply_markup=menu)
     
 
